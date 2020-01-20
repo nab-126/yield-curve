@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width">
+        <title>Yield Curve</title>
+        <link rel="stylesheet" href="/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    </head>
+    <body>
+        <header class="fixed-bar"> <h1 class="page-title">U.S. Treasury Yield Curve</h1> </header>
+        <canvas id="chart" class="chart"></canvas>
+        <div>
+            <p class="question">What is the Yield Curve?</p>
+            <p class="answer"> The yield curve is just a graph showing the relationship
+                between short term and long term interest rates of U.S.
+                There are three main types of yield curve shapes:
+                normal (upward sloping curve), inverted (downward
+                sloping curve) and flat.
+            </p>
+        </div>
+        <div>
+            <p class="question">Why do people care about the Yield Curve?</p>
+            <p class="answer"> A Treasury note is essentially lending money to the government.
+                The risk of letting the government hold on that money for a longer
+                period of time is usually compensated by a higher: higher
+                interest rates. Hence, the short term rate is usually lower than 
+                the long term one which gives rise to a normal tield curve. 
+
+                But sometimes this relationship changes. If the long term rate
+                dips below the short term rate, the yield curve inverts and the
+                market is concerned about it because it suggests the economy is
+                heading into a recession. 
+            </p>
+        <div>
+            <p class="question">Is the Yield Curve a good predictor of economic recession?</p>
+            <p class="answer"> Arturo Estrella is one of the economists who helped discover the
+                predictive power of the yield curve while working with a colleague at the
+                Federal Reserve Bank of New York
+                The U.S. Federal Reserve’s preferred measure to gauge an inverted
+                yield curve is the difference between the 10-year and 3-month treasury
+                yields. To ensure that short-term fluctuations in interest rates are excluded,
+                the Fed considers the yield curve to have inverted only when the difference
+                in yields for these two securities remains negative for ten consecutive days.
+                
+                But many in the finance world also watch the difference between the 2 year
+                and 10 year rates closely.
+                The New York Fed research focused on a three month ten year.
+                They feel that that has the most predictive power.
+                The inverted yield curve has consistently predicted a recession
+                each of the 5 times in the last 5 decades. Although, a recession
+                follows the inversion, the timing is uncertain.</p>
+        </div>
+        <script>
+            async function plotTreasuryData() {
+                var chartLabels = <%- JSON.stringify(xlabels) %>
+                var chartRates = <%- JSON.stringify(rates) %>
+                var date = <%- JSON.stringify(time) %>
+                
+                const ctx = document.getElementById('chart').getContext('2d');
+                const chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            label: 'Treasury Yield Curve ' + date,
+                            borderColor: 'rgb(102, 179, 255)',
+                            data: chartRates,
+                            fill: false
+                        }],
+                        
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    max: 3,
+                                    min: 0,
+                                    stepSize: 0.5
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+            plotTreasuryData();
+        </script>
+    </body>
+</html>
